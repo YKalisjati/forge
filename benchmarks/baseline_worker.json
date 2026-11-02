@@ -1,0 +1,59 @@
+[
+  {
+    "scenario": "Worker Drain (Concurrency=5, Prefetch=10)",
+    "concurrency": 5,
+    "duration": 2201361042,
+    "total_requests": 1000,
+    "success_requests": 1000,
+    "failed_requests": 0,
+    "throughput_rps": 454.26442138335983,
+    "min_latency_ms": 203.394,
+    "p50_latency_ms": 1154.872,
+    "p90_latency_ms": 1874.906,
+    "p95_latency_ms": 1979.548,
+    "p99_latency_ms": 2092.878,
+    "max_latency_ms": 2113.886,
+    "avg_latency_ms": 1156.6927179999982,
+    "status_counts": {
+      "200": 1000
+    }
+  },
+  {
+    "scenario": "Worker Drain (Concurrency=15, Prefetch=30)",
+    "concurrency": 15,
+    "duration": 2200664084,
+    "total_requests": 1000,
+    "success_requests": 1000,
+    "failed_requests": 0,
+    "throughput_rps": 454.40828851187814,
+    "min_latency_ms": 114.739,
+    "p50_latency_ms": 1100.651,
+    "p90_latency_ms": 1901.387,
+    "p95_latency_ms": 2007.388,
+    "p99_latency_ms": 2084.151,
+    "max_latency_ms": 2106.699,
+    "avg_latency_ms": 1104.3980500000002,
+    "status_counts": {
+      "200": 1000
+    }
+  },
+  {
+    "scenario": "Worker Drain (Concurrency=30, Prefetch=60)",
+    "concurrency": 30,
+    "duration": 2400801750,
+    "total_requests": 1000,
+    "success_requests": 1000,
+    "failed_requests": 0,
+    "throughput_rps": 416.52752044186906,
+    "min_latency_ms": 91.088,
+    "p50_latency_ms": 1205.922,
+    "p90_latency_ms": 2141.778,
+    "p95_latency_ms": 2254.442,
+    "p99_latency_ms": 2357.626,
+    "max_latency_ms": 2382.817,
+    "avg_latency_ms": 1231.9728169999992,
+    "status_counts": {
+      "200": 1000
+    }
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "scenario": "Mixed Workload (70% Read / 30% Write)",
+    "concurrency": 50,
+    "duration": 15029967750,
+    "total_requests": 55868,
+    "success_requests": 55868,
+    "failed_requests": 0,
+    "throughput_rps": 3717.1071108918377,
+    "min_latency_ms": 0.285,
+    "p50_latency_ms": 6.046,
+    "p90_latency_ms": 32.485,
+    "p95_latency_ms": 42.032,
+    "p99_latency_ms": 71.964,
+    "max_latency_ms": 187.184,
+    "avg_latency_ms": 13.427315117777656,
+    "status_counts": {
+      "200": 39144,
+      "202": 16724
+    }
+  }
+]

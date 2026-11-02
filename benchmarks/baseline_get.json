@@ -1,0 +1,21 @@
+[
+  {
+    "scenario": "GET /v1/jobs/{id} (Polling)",
+    "concurrency": 50,
+    "duration": 15221429834,
+    "total_requests": 2555,
+    "success_requests": 2555,
+    "failed_requests": 0,
+    "throughput_rps": 167.85545299383864,
+    "min_latency_ms": 55.706,
+    "p50_latency_ms": 171.569,
+    "p90_latency_ms": 524.668,
+    "p95_latency_ms": 782.711,
+    "p99_latency_ms": 3344.3,
+    "max_latency_ms": 3945.094,
+    "avg_latency_ms": 295.97401682974566,
+    "status_counts": {
+      "200": 2555
+    }
+  }
+]

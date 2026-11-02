@@ -1,0 +1,21 @@
+[
+  {
+    "scenario": "POST /v1/jobs (Ingestion)",
+    "concurrency": 50,
+    "duration": 15020356208,
+    "total_requests": 32618,
+    "success_requests": 32618,
+    "failed_requests": 0,
+    "throughput_rps": 2171.586315817684,
+    "min_latency_ms": 9.381,
+    "p50_latency_ms": 20.156,
+    "p90_latency_ms": 29.875,
+    "p95_latency_ms": 36.316,
+    "p99_latency_ms": 67.072,
+    "max_latency_ms": 341.607,
+    "avg_latency_ms": 23.005850573303025,
+    "status_counts": {
+      "202": 32618
+    }
+  }
+]
