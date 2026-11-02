@@ -18,7 +18,9 @@ This document records the curated, chronological Git history of the **Forge** pl
 | 8 | `77de96b` | `test` | add 14-scenario end-to-end distributed reliability verification | `docs/test-report.md` (14/14 automated scenarios pass) |
 | 9 | `5144003` | `perf` | add load benchmarking suite and query plan optimizations | k6 load tests, EXPLAIN ANALYZE query verification |
 | 10 | `7cdb443` | `docs` | finalize portfolio documentation, release checklist, and MIT license | Documentation review & license verification |
-| 11 | `a7ba603` | `security` | harden repository configuration, CI workflow, and audit report | Gitleaks secret scan (0 leaks), CI workflow validation |
+| 11 | `2fcd2ed` | `security` | harden repository configuration, CI workflow, and audit report | Gitleaks secret scan (0 leaks), CI workflow validation |
+| 12 | `deb77c6` | `fix` | resolve CI test failure via sequential execution and linter install | Local reproduction & verification |
+| 13 | `acaba87` | `fix` | pin Go toolchain version in CI via go.mod to prevent export data mismatch | GitHub Actions CI green (Run 41473678530) |
 
 ---
 
@@ -85,7 +87,13 @@ This document records the curated, chronological Git history of the **Forge** pl
 - **Rationale**: Synthesizes the architecture, failure handling, benchmarks, and API usage into an industry-grade README with complete architectural diagrams and release readiness gates.
 
 ### Commit 11: Security Hardening & CI Workflow
-- **Hash**: `a7ba603`
+- **Hash**: `2fcd2ed`
 - **Subject**: `security: harden repository configuration, CI workflow, and audit report`
 - **Scope**: `.gitleaks.toml`, `.github/workflows/ci.yml`, `docs/security-audit.md`, `docs/git-history.md`.
 - **Rationale**: Integrates automated multi-service GitHub Actions CI, configures secret detection rules, and seals the security audit ensuring zero exposed secrets or sensitive metadata.
+
+### Commit 12 & 13: CI Reliability & Toolchain Hardening
+- **Hashes**: `deb77c6`, `acaba87`
+- **Subjects**: `fix: resolve CI test failure`, `fix: pin Go toolchain version in CI via go.mod to prevent export data mismatch`
+- **Scope**: `.github/workflows/ci.yml`.
+- **Rationale**: Enforces sequential package test execution (`-p 1`) to eliminate race conditions across shared test database tables and message queues; pins runner Go toolchain to `go.mod` (`go-version-file: 'go.mod'`) to ensure compiler export data format compatibility in static analysis tools. Verified passing on GitHub Actions run `41473678530`.
