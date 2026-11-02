@@ -35,9 +35,9 @@ jobs:
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
-          version: v1.61
+          version: latest
+          install-mode: "goinstall"
           args: --timeout=5m
-        continue-on-error: true
 
   test:
     name: Unit, Integration & Race Tests
@@ -112,7 +112,7 @@ jobs:
           RABBITMQ_PASSWORD: guest
           REDIS_HOST: localhost
           REDIS_PORT: 6379
-        run: go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+        run: go test -v -race -p 1 -coverprofile=coverage.txt -covermode=atomic ./...
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
