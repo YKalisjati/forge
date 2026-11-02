@@ -1,0 +1,22 @@
+# Binaries
+/bin/
+/dist/
+
+# Environment files
+.env
+!.env.example
+
+# Test & coverage artifacts
+coverage.out
+coverage.txt
+coverage.html
+
+# IDE & OS files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# Temporary scratch files
+tmp/

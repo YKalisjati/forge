@@ -1,0 +1,22 @@
+run:
+  timeout: 5m
+  tests: true
+
+linters:
+  enable:
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - misspell
+    - unconvert
+    - revive
+
+issues:
+  exclude-dirs:
+    - bin
+    - tmp
+  max-issues-per-linter: 50
+  max-same-issues: 10
