@@ -1,0 +1,12 @@
+# Gitleaks configuration for Forge
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Allowlist documentation example HTTP headers and test dummy strings"
+paths = [
+  '''docs/api-contract\.md''',
+  '''pkg/logger/logger_test\.go''',
+  '''docs/security-audit\.md'''
+]
+

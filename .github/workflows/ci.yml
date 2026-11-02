@@ -1,0 +1,159 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    name: Lint & Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+          cache: true
+
+      - name: Verify Code Formatting
+        run: |
+          DIFF=$(gofmt -l .)
+          if [ -n "$DIFF" ]; then
+            echo "The following files are not formatted properly:"
+            echo "$DIFF"
+            exit 1
+          fi
+
+      - name: Run go vet
+        run: go vet ./...
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.61
+          args: --timeout=5m
+        continue-on-error: true
+
+  test:
+    name: Unit, Integration & Race Tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: forge_user
+          POSTGRES_PASSWORD: forge_secret_dev
+          POSTGRES_DB: forge_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+      rabbitmq:
+        image: rabbitmq:3.13-management-alpine
+        env:
+          RABBITMQ_DEFAULT_USER: guest
+          RABBITMQ_DEFAULT_PASS: guest
+        ports:
+          - 5672:5672
+        options: >-
+          --health-cmd "rabbitmq-diagnostics -q ping"
+          --health-interval 10s
+          --health-timeout 10s
+          --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+          cache: true
+
+      - name: Apply Migrations
+        env:
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_USER: forge_user
+          DB_PASSWORD: forge_secret_dev
+          DB_NAME: forge_db
+          DB_SSLMODE: disable
+        run: go run ./cmd/migrate up
+
+      - name: Run Tests with Race Detector
+        env:
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_USER: forge_user
+          DB_PASSWORD: forge_secret_dev
+          DB_NAME: forge_db
+          DB_SSLMODE: disable
+          RABBITMQ_HOST: localhost
+          RABBITMQ_PORT: 5672
+          RABBITMQ_USER: guest
+          RABBITMQ_PASSWORD: guest
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+        run: go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.txt
+          if-no-files-found: ignore
+
+  build:
+    name: Build Executables
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+          cache: true
+
+      - name: Compile All Executables
+        run: make build
+
+  docker:
+    name: Docker Multi-Stage Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [api, worker, outbox-relay]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image for ${{ matrix.target }}
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          build-args: TARGET=${{ matrix.target }}
+          push: false
+          tags: forge-${{ matrix.target }}:latest
